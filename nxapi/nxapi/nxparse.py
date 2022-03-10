@@ -462,7 +462,6 @@ class ESInject(NxInjector):
             try:
                 self.es.indices.put_mapping(
                     index=self.cfg["elastic"]["index"],
-                    include_type_name=True,
                     body={
                         "events" : {
                             # * (Note: The _timestamp and _ttl fields were deprecated and are now removed in ES 5.X.
