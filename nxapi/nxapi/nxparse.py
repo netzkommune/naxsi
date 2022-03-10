@@ -16,7 +16,7 @@ import datetime
 #import urllib2 as urllib
 import json
 import copy
-from elasticsearch.helpers import bulk
+from elasticsearch6.helpers import bulk
 import os
 import socket
 
