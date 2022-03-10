@@ -404,7 +404,7 @@ class ESInject(NxInjector):
     #         return False
     #     return True
     def set_mappings(self):
-        if int(self.es_version) >= 5:
+        if int(self.es_version) >= 5 and int(self.es_version) < 7:
             try:
                 self.es.indices.create(
                     index=self.cfg["elastic"]["index"],
@@ -444,6 +444,46 @@ class ESInject(NxInjector):
                 })
             except Exception as mapset_error:
                 print("Unable to set mapping on index/collection for ES 5.X: "+self.cfg["elastic"]["index"]+" "+self.cfg["elastic"]["doctype"]+", Error: "+str(mapset_error))
+                return
+        elif int(self.es_version) >= 7:
+            try:
+                self.es.indices.create(
+                    index=self.cfg["elastic"]["index"],
+                    body = {
+                        "settings" : {
+                            "number_of_shards": self.cfg["elastic"]["number_of_shards"],
+                            "number_of_replicas": self.cfg["elastic"]["number_of_replicas"]
+                        }
+                    },
+                    ignore=400 # Ignore 400 cause by IndexAlreadyExistsException when creating an index
+                )
+            except Exception as idxadd_error:
+                print("Unable to create the index/collection for ES 7.X: "+self.cfg["elastic"]["index"]+" "+self.cfg["elastic"]["doctype"]+ ", Error: " + str(idxadd_error))
+            try:
+                self.es.indices.put_mapping(
+                    index=self.cfg["elastic"]["index"],
+                    include_type_name=True,
+                    body={
+                        "events" : {
+                            # * (Note: The _timestamp and _ttl fields were deprecated and are now removed in ES 5.X.
+                            # deleting documents from an index is very expensive compared to deleting whole indexes.
+                            # That is why time based indexes are recommended over this sort of thing and why
+                            # _ttl was deprecated in the first place)
+                            #"_ttl" : { "enabled" : "true", "default" : "4d" },
+                            "properties" : {
+                                "id" : {"type": "keyword"},
+                                "var_name" : {"type": "keyword"},
+                                "uri" : {"type": "keyword"},
+                                "zone" : {"type": "keyword"},
+                                "server" : {"type": "keyword"},
+                                "whitelisted" : {"type" : "keyword"},
+                                "ip" : {"type" : "keyword"},
+                                "country" : {"type" : "keyword"}
+                            }
+                        }
+                })
+            except Exception as mapset_error:
+                print("Unable to set mapping on index/collection for ES 7.X: "+self.cfg["elastic"]["index"]+" "+self.cfg["elastic"]["doctype"]+", Error: "+str(mapset_error))
                 return
         else:
             try:
