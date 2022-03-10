@@ -1,2 +1,1 @@
-elasticsearch==5.5.3
-GeoIP
+elasticsearch
