@@ -5,7 +5,8 @@ import time
 import glob
 import logging
 import string
-import urlparse
+#import urlparse
+import urllib.parse as urlparse
 import itertools
 import gzip
 import bz2

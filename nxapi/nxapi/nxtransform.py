@@ -9,7 +9,7 @@ import datetime
 import glob
 import sys
 
-from nxtypificator import Typificator
+#from nxtypificator import Typificator
 
 class NxConfig():
     """ Simple configuration loader """
