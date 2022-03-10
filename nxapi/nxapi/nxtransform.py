@@ -257,7 +257,7 @@ class NxTranslate():
                     continue
                 for y in full_wl[x]:
                     output.append("#{0} : {1}\n".format(x, y))
-        return ''.join(output)
+        return "".join(output)
 
 #        pprint.pprint(scores)
         for x in scores['success']:
