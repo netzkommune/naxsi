@@ -462,6 +462,8 @@ class ESInject(NxInjector):
             try:
                 self.es.indices.put_mapping(
                     index=self.cfg["elastic"]["index"],
+                    doc_type=self.cfg["elastic"]["doctype"],
+                    include_type_name=True,
                     body={
                         "events" : {
                             # * (Note: The _timestamp and _ttl fields were deprecated and are now removed in ES 5.X.
@@ -482,7 +484,7 @@ class ESInject(NxInjector):
                         }
                 })
             except Exception as mapset_error:
-                print("Unable to set mapping on index/collection for ES 7.X: "+self.cfg["elastic"]["index"]+" "+self.cfg["elastic"]["doctype"]+", Error: "+str(mapset_error))
+                print("Unable to set mapping on index/collection for ES 5.X: "+self.cfg["elastic"]["index"]+" "+self.cfg["elastic"]["doctype"]+", Error: "+str(mapset_error))
                 return
         else:
             try:
