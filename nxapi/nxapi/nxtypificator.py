@@ -4,7 +4,7 @@ This modules generate types for url parameters.
 import re
 import sys
 import collections
-from elasticsearch import Elasticsearch
+from elasticsearch6 import Elasticsearch
 
 # Each regexp is a subset of the next one
 REGEXPS = [
