@@ -230,7 +230,7 @@ class NxTranslate():
                                 if (len(results['success']) > len(results['warnings']) and results["deny"] == False) or self.cfg["naxsi"]["strict"] == "false":
                                     # print "?deny "+str(results['deny'])
                                     try:
-                                        str_genrule = '{0}'.format(self.grn.format(self.tpl2wl(genrule['rule']).encode('utf-8', 'replace'), template))
+                                        str_genrule = '{0}'.format(self.grn.format(self.tpl2wl(genrule['rule']), template))
                                     except UnicodeDecodeError:
                                         logging.warning('WARNING: Unprocessable string found in the elastic search')
                                     output.append(self.fancy_display(genrule, results, template))
