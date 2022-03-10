@@ -500,8 +500,7 @@ class ESInject(NxInjector):
                 # go utf-8 ?
                 for x in entry.keys():
                     if isinstance(entry[x], str):
-                        entry[x] = unicode(entry[x], errors='replace')
-                items.append(entry)
+                        items.append(entry)
                 count += 1
         mapfunc = partial(json.dumps, ensure_ascii=False)
         try:
