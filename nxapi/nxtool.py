@@ -17,7 +17,7 @@ from collections import defaultdict
 from optparse import OptionParser, OptionGroup
 
 # Third party
-import elasticsearch
+import elasticsearch6 as elasticsearch
 from nxapi.nxtransform import *
 from nxapi.nxparse import *
 
