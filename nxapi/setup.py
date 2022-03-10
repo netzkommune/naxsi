@@ -12,11 +12,11 @@ data_files = [('/usr/local/nxapi/', ['nx_datas/country2coords.txt']),
 for dirname, dirnames, filenames in os.walk('tpl/'):
     for filename in filenames:
         if filename.endswith(".tpl"):
-            print dirname+"#"+filename
+            print(dirname+"#"+filename)
             if "/usr/local/nxapi/"+dirname not in f.keys():
-                
+
                 f["/usr/local/nxapi/"+dirname] = []
-                
+
             f["/usr/local/nxapi/"+dirname].append(os.path.join(dirname, filename))
 
 for z in f.keys():
@@ -33,4 +33,3 @@ setup(name='nxtool',
       packages=['nxapi'],
       data_files=data_files
       )
-

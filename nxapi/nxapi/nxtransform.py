@@ -48,7 +48,7 @@ class NxRating():
     def refresh_scope(self, scope, esq):
         """ drops all datas for a named scope """
         if scope not in self.esq.keys():
-            print "Unknown scope ?!"+scope
+            print("Unknown scope ?!"+scope)
         self.esq[scope] = esq
         self.stats[scope] = {}
     def query_ratio(self, scope, scope_small, score, force_refresh):
@@ -72,12 +72,12 @@ class NxRating():
             else:
                 res = self.tr.search(self.esq[scope])
                 self.stats[scope][score] = res['hits']['total']
-            
+
             return self.stats[scope][score]
     def check_rule_score(self, tpl):
         """ wrapper to check_score, TOFIX ? """
-        return self.check_score(tpl_success=tpl.get('_success', None), 
-                                tpl_warnings=tpl.get('_warnings', None), 
+        return self.check_score(tpl_success=tpl.get('_success', None),
+                                tpl_warnings=tpl.get('_warnings', None),
                                 tpl_deny=tpl.get('_deny', None))
     def check_score(self, tpl_success=None, tpl_warnings=None, tpl_deny=None):
 #        pprint.pprint(self.stats)
@@ -106,13 +106,13 @@ class NxRating():
                 res = self.check_rule(k, scheck[k])
                 if res['check'] is True:
                     if debug is True:
-                        print "[SUCCESS] OK, on "+k+" vs "+str(res['curr'])+", check :"+str(scheck[k][0])+" - "+str(scheck[k][1])
+                        print("[SUCCESS] OK, on "+k+" vs "+str(res['curr'])+", check :"+str(scheck[k][0])+" - "+str(scheck[k][1]))
                     success.append({'key' : k, 'criteria' : scheck[k], 'curr' : res['curr']})
                 else:
                     if debug is True:
-                        print "[SUCCESS] KO, on "+k+" vs "+str(res['curr'])+", check :"+str(scheck[k][0])+" - "+str(scheck[k][1])
+                        print("[SUCCESS] KO, on "+k+" vs "+str(res['curr'])+", check :"+str(scheck[k][0])+" - "+str(scheck[k][1]))
                     failed_tests["success"].append({'key' : k, 'criteria' : scheck[k], 'curr' : res['curr']})
-                
+
         for fcheck in [glb_warnings, tpl_warnings]:
             if fcheck is None:
                 continue
@@ -120,11 +120,11 @@ class NxRating():
                 res = self.check_rule(k, fcheck[k])
                 if res['check'] is True:
                     if debug is True:
-                        print "[WARNINGS] TRIGGERED, on "+k+" vs "+str(res['curr'])+", check :"+str(fcheck[k][0])+" - "+str(fcheck[k][1])
+                        print("[WARNINGS] TRIGGERED, on "+k+" vs "+str(res['curr'])+", check :"+str(fcheck[k][0])+" - "+str(fcheck[k][1]))
                     warning.append({'key' : k, 'criteria' : fcheck[k], 'curr' : res['curr']})
                 else:
                     if debug is True:
-                        print "[WARNINGS] NOT TRIGGERED, on "+k+" vs "+str(res['curr'])+", check :"+str(fcheck[k][0])+" - "+str(fcheck[k][1])
+                        print("[WARNINGS] NOT TRIGGERED, on "+k+" vs "+str(res['curr'])+", check :"+str(fcheck[k][0])+" - "+str(fcheck[k][1]))
                     failed_tests["warnings"].append({'key' : k, 'criteria' : fcheck[k], 'curr' : res['curr']})
         x = { 'success' : success,
               'warnings' : warning,
@@ -141,7 +141,7 @@ class NxRating():
         items = label.split('_')
         for x in range(len(items)):
             items[x] = items[x].replace("var-name", "var_name")
-            
+
         if len(items) == 2:
             scope = items[0]
             score = items[1]
@@ -156,7 +156,7 @@ class NxRating():
             #Xpprint.pprint()
             return {'curr' : x, 'check' : check(int(self.get(scope, score, scope_small=scope_small)), int(beat))}
         else:
-            print "cannot understand rule ("+label+"):",
+            print("cannot understand rule ("+label+"):",)
             pprint.pprint(check_rule)
             return { 'curr' : 0, 'check' : False }
 
@@ -177,7 +177,7 @@ class NxTranslate():
         self.core_msg = {}
         # by default, es queries will return 1000 results max
         self.es_max_size = self.cfg.get("elastic").get("max_size", 1000)
-        print "# size :"+str(self.es_max_size)
+        print("# size :"+str(self.es_max_size))
         # purely for output coloring
         self.red = u'{0}'
         self.grn = u'{0}'
@@ -242,7 +242,7 @@ class NxTranslate():
 
     def wl_on_type(self):
         for rule in Typificator(self.es, self.cfg).get_rules():
-            print 'BasicRule negative "rx:{0}" "msg:{1}" "mz:${2}_VAR:{3}" "s:BLOCK";'.format(*rule)
+            print('BasicRule negative "rx:{0}" "msg:{1}" "mz:${2}_VAR:{3}" "s:BLOCK";'.format(*rule))
 
     def fancy_display(self, full_wl, scores, template=None):
         output = []
@@ -261,9 +261,9 @@ class NxTranslate():
 
 #        pprint.pprint(scores)
         for x in scores['success']:
-            print "# success : "+self.grn.format(str(x['key'])+" is "+str(x['curr']))
+            print("# success : "+self.grn.format(str(x['key'])+" is "+str(x['curr'])))
         for x in scores['warnings']:
-            print "# warnings : "+self.grn.format(str(x['key'])+" is "+str(x['curr']))
+            print("# warnings : "+self.grn.format(str(x['key'])+" is "+str(x['curr'])))
 
         pass
     def expand_tpl_path(self, template):
@@ -311,7 +311,7 @@ class NxTranslate():
         return template
     def load_wl_file(self, wlf):
         """ Loads a file of whitelists,
-        convert them to ES queries, 
+        convert them to ES queries,
         and returns them as a list """
         esql = []
         try:
@@ -342,9 +342,9 @@ class NxTranslate():
         except:
             logging.warning("Unable to open rules file")
     def tpl2esq(self, ob, full=True):
-        ''' receives template or a rule, returns a valid 
+        ''' receives template or a rule, returns a valid
         ElasticSearch query '''
-        qr = { 
+        qr = {
             "query" : { "bool" : { "must" : [ ]} },
             "size" : self.es_max_size
             }
@@ -368,13 +368,13 @@ class NxTranslate():
         qr = self.append_gfilter(qr)
         return qr
     def append_gfilter(self, esq):
-        """ append global filters parameters 
+        """ append global filters parameters
         to and existing elasticsearch query """
         for x in self.cfg["global_filters"]:
             if x.startswith('?'):
                 x = x[1:]
                 if {"regexp" : { x : self.cfg["global_filters"]['?'+x] }} not in esq['query']['bool']['must']:
-                    esq['query']['bool']['must'].append({"regexp" : { x : self.cfg["global_filters"]['?'+x] }}) 
+                    esq['query']['bool']['must'].append({"regexp" : { x : self.cfg["global_filters"]['?'+x] }})
             else:
                 if {"match" : { x : self.cfg["global_filters"][x] }} not in esq['query']['bool']['must']:
                     esq['query']['bool']['must'].append({"match" : { x : self.cfg["global_filters"][x] }})
@@ -387,7 +387,7 @@ class NxTranslate():
         """ parses a fulltext naxsi whitelist,
         and outputs the matching es query (ie. for tagging),
         returns [True|False, error_string|ESquery] """
-        esq = { 
+        esq = {
             "query" : { "bool" : { "must" : [ ]} },
             "size" : self.es_max_size
             }
@@ -482,7 +482,7 @@ class NxTranslate():
                 elif zone == "URL":
                     tpl.append({"match" : { "uri" : var_name }})
                 else:
-                    print "huh, what's that ? "+zone
+                    print("huh, what's that ? "+zone)
 
             # |<ZONE>
             else:
@@ -512,7 +512,7 @@ class NxTranslate():
         if rule.get('uri', None) is not None:
             wl += "$URL:"+rule['uri']
             wl += "|"
-        # whitelist targets name    
+        # whitelist targets name
         if rule.get('zone', '').endswith("|NAME"):
             tname = True
             zone = rule['zone'][:-5]
@@ -544,9 +544,9 @@ class NxTranslate():
         elif self.cfg["elastic"].get("version", None) in ["2", "5"]:
             esq['aggregations'] =  { "agg1" : {"terms": { "field": field, "size" : self.es_max_size} }}
         else:
-            print "Unknown / Unspecified ES version in nxapi.json : {0}".format(self.cfg["elastic"].get("version", "#UNDEFINED"))
+            print("Unknown / Unspecified ES version in nxapi.json : {0}".format(self.cfg["elastic"].get("version", "#UNDEFINED")))
             sys.exit(1)
-            
+
         res = self.search(esq)
 
         if self.cfg["elastic"].get("version", None) == "1":
@@ -554,7 +554,7 @@ class NxTranslate():
         elif self.cfg["elastic"].get("version", None) in ["2", "5"]:
             total = res['hits']['total']
         else:
-            print "Unknown / Unspecified ES version in nxapi.json : {0}".format(self.cfg["elastic"].get("version", "#UNDEFINED"))
+            print("Unknown / Unspecified ES version in nxapi.json : {0}".format(self.cfg["elastic"].get("version", "#UNDEFINED")))
             sys.exit(1)
 
         count = 0
@@ -572,7 +572,7 @@ class NxTranslate():
                 if count > limit:
                     break
         else:
-            print "Unknown / Unspecified ES version in nxapi.json : {0}".format(self.cfg["elastic"].get("version", "#UNDEFINED"))
+            print("Unknown / Unspecified ES version in nxapi.json : {0}".format(self.cfg["elastic"].get("version", "#UNDEFINED")))
             sys.exit(1)
         return ret
 
@@ -587,7 +587,7 @@ class NxTranslate():
         elif self.cfg["elastic"].get("version", None) in ["2", "5"]:
             esq['aggregations'] =  { "agg1" : {"terms": { "field": key, "size" : 50000} }}
         else:
-            print "Unknown / Unspecified ES version in nxapi.json : {0}".format(self.cfg["elastic"].get("version", "#UNDEFINED"))
+            print("Unknown / Unspecified ES version in nxapi.json : {0}".format(self.cfg["elastic"].get("version", "#UNDEFINED")))
             sys.exit(1)
 
         res = self.search(esq)
@@ -600,29 +600,29 @@ class NxTranslate():
                 if x['key'] not in uniques:
                     uniques.append(x['key'])
         else:
-            print "Unknown / Unspecified ES version in nxapi.json : {0}".format(self.cfg["elastic"].get("version", "#UNDEFINED"))
+            print("Unknown / Unspecified ES version in nxapi.json : {0}".format(self.cfg["elastic"].get("version", "#UNDEFINED")))
             sys.exit(1)
-            
+
         return { 'list' : uniques, 'total' :  len(uniques) }
     def index(self, body, eid):
         return self.es.index(index=self.cfg["elastic"]["index"], doc_type=self.cfg["elastic"]["doctype"], body=body, id=eid)
     def search(self, esq, stats=False):
         """ search wrapper with debug """
         debug = False
-        
+
         if debug is True:
-            print "#SEARCH:PARAMS:index="+self.cfg["elastic"]["index"]+", doc_type="+self.cfg["elastic"]["doctype"]+", body=",
-            print "#SEARCH:QUERY:",
+            print("#SEARCH:PARAMS:index="+self.cfg["elastic"]["index"]+", doc_type="+self.cfg["elastic"]["doctype"]+", body=",)
+            print("#SEARCH:QUERY:",)
             pprint.pprint (esq)
         if len(esq["query"]["bool"]["must"]) == 0:
             del esq["query"]
         x = self.es.search(index=self.cfg["elastic"]["index"], doc_type=self.cfg["elastic"]["doctype"], body=esq)
         if debug is True:
-            print "#RESULT:",
+            print("#RESULT:",)
             pprint.pprint(x)
         return x
     def normalize_checks(self, tpl):
-        """ replace check signs (<, >, <=, >=) by 
+        """ replace check signs (<, >, <=, >=) by
                 operator.X in a dict-form tpl """
         replace = {
             '>' : operator.gt,
@@ -630,7 +630,7 @@ class NxTranslate():
             '>=' : operator.ge,
             '<=' : operator.le
             }
-        
+
         for tpl_key in tpl.keys():
             for token in replace.keys():
                 if tpl[tpl_key][0] == token:
@@ -641,11 +641,11 @@ class NxTranslate():
         count = 0
         total_events = 0
         esq["size"] = "0"
-        print "TAG RULE :",
+        print("TAG RULE :",)
         pprint.pprint(esq)
         x = self.search(esq)
         total_events = int(str(x["hits"]["total"]))
-        print str(self.grn.format(total_events)) + " items to be tagged ..."
+        print(str(self.grn.format(total_events)) + " items to be tagged ...")
         size = int(x['hits']['total'])
         if size > 20000:
             size = size / 100
@@ -667,12 +667,12 @@ class NxTranslate():
                 if tag is True:
                     self.index(body, eid)
                 else:
-                    print eid+",",
+                    print(eid+",",)
                 count += 1
-            print "Tagged {0} events out of {1}".format(count, total_events)
+            print("Tagged {0} events out of {1}".format(count, total_events))
             if total_events - count < size:
                 size = total_events - count
-        print ""
+        print("")
         #--
         if not tag or tag is False:
             return 0
@@ -715,7 +715,7 @@ class NxTranslate():
                 rule[tpl_key] = tpl[tpl_key]
                 retlist += self.gen_wl(tpl, copy.copy(rule))
                 return retlist
-    
+
         esq = self.tpl2esq(rule)
         res = self.search(esq)
         if res['hits']['total'] > 0:
