@@ -499,7 +499,7 @@ class ESInject(NxInjector):
                 entry['comments'] = "import:"+str(datetime.datetime.now())
                 # go utf-8 ?
                 for x in entry.keys():
-                    if isinstance(entry[x], basestring):
+                    if isinstance(entry[x], str):
                         entry[x] = unicode(entry[x], errors='replace')
                 items.append(entry)
                 count += 1
