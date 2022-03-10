@@ -71,7 +71,7 @@ class NxRating():
                 self.stats[scope][score] = self.tr.fetch_uniques(self.esq[scope], score)['total']
             else:
                 res = self.tr.search(self.esq[scope])
-                self.stats[scope][score] = res['hits']['total']
+                self.stats[scope][score] = res['hits']['total']['value']
 
             return self.stats[scope][score]
     def check_rule_score(self, tpl):
@@ -720,7 +720,7 @@ class NxTranslate():
 
         esq = self.tpl2esq(rule)
         res = self.search(esq)
-        if res['hits']['total'] > 0:
+        if res['hits']['total']['value'] > 0:
             clist = []
             peers = []
             country = []
