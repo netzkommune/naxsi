@@ -404,7 +404,7 @@ class ESInject(NxInjector):
     #         return False
     #     return True
     def set_mappings(self):
-        if self.es_version == '5':
+        if int(self.es_version) >= 5:
             try:
                 self.es.indices.create(
                     index=self.cfg["elastic"]["index"],
