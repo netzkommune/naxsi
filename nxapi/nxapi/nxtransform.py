@@ -256,7 +256,7 @@ class NxTranslate():
                 if x not in full_wl.keys():
                     continue
                 for y in full_wl[x]:
-                    output.append("#{0} : {1}\n".format(x, unicode(y).encode("utf-8", 'replace')))
+                    output.append("#{0} : {1}\n".format(x, y))
         return ''.join(output)
 
 #        pprint.pprint(scores)
