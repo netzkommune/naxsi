@@ -161,7 +161,7 @@ try:
 except KeyError:
     use_ssl = False
 
-es = elasticsearch.Elasticsearch("http://" + cfg.cfg["elastic"]["host"] + ":9200")
+es = elasticsearch.Elasticsearch(cfg.cfg["elastic"]["host"])
 # Get ES version from the client and avail it at cfg
 es_version =  es.info()['version'].get('number', None)
 if es_version is not None:
