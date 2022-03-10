@@ -551,8 +551,10 @@ class NxTranslate():
 
         if self.cfg["elastic"].get("version", None) == "1":
             total = res['facets']['facet_results']['total']
-        elif self.cfg["elastic"].get("version", None) in ["2", "5", "6", "7"]:
+        elif self.cfg["elastic"].get("version", None) in ["2", "5", "6"]:
             total = res['hits']['total']
+        elif self.cfg["elastic"].get("version", None) in ["7"]:
+            total = res['hits']['total']['value']
         else:
             print("Unknown / Unspecified ES version in nxapi.json : {0}".format(self.cfg["elastic"].get("version", "#UNDEFINED")))
             sys.exit(1)
