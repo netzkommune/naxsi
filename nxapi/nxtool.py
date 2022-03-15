@@ -337,7 +337,7 @@ def write_generated_wl(filename, results):
         wl_file.flush()
 
 def ask_user_for_server_selection(editor, welcome_sentences, selection):
-    with tempfile.NamedTemporaryFile(suffix='.tmp') as temporary_file:
+    with tempfile.NamedTemporaryFile(mode='w+', suffix='.tmp') as temporary_file:
         top_selection = translate.fetch_top(cfg.cfg["global_filters"],
                             selection,
                             limit=10
@@ -360,7 +360,7 @@ def ask_user_for_selection(editor, welcome_sentences, selection, servers):
     for server in servers:
         server_reminder = "server: {0}\n\n".format(server)
         ret[server] = []
-        with tempfile.NamedTemporaryFile(suffix='.tmp') as temporary_file:
+        with tempfile.NamedTemporaryFile(mode='w+', suffix='.tmp') as temporary_file:
             temporary_file.write(welcome_sentences + regex_message + server_reminder)
             cfg.cfg["global_filters"]["server"] = server
             top_selection = translate.fetch_top(cfg.cfg["global_filters"],
