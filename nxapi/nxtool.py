@@ -327,7 +327,7 @@ def write_generated_wl(filename, results):
 
     with open('/tmp/{0}'.format(filename), 'w') as wl_file:
         for result in results:
-            for key, items in result.iteritems():
+            for key, items in result.items():
                 if items:
                     logging.debug("{} {}".format(key, items))
                     if key == 'genrule':
@@ -379,7 +379,7 @@ def ask_user_for_selection(editor, welcome_sentences, selection, servers):
     return ret
 
 def generate_wl(selection_dict):
-    for key, items in selection_dict.iteritems():
+    for key, items in selection_dict.items():
         if not items:
             return False
         global_filters_context = cfg.cfg["global_filters"]
